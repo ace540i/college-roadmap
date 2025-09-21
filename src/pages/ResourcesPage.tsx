@@ -88,7 +88,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Government Form</span>
               </div>
               <p>Free Application for Federal Student Aid - must complete for financial aid</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://studentaid.gov/h/apply-for-aid/fafsa', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -99,7 +99,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Scholarship Database</span>
               </div>
               <p>Comprehensive scholarship search database</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://www.scholarships.com/', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -131,7 +131,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Free Prep</span>
               </div>
               <p>Free, personalized SAT practice in partnership with College Board</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://www.khanacademy.org/sat', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -142,7 +142,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Official Prep</span>
               </div>
               <p>Official ACT test prep resources and registration</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://www.act.org/content/act/en/products-and-services/the-act/test-preparation.html', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -153,7 +153,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Official Prep</span>
               </div>
               <p>Official SAT practice tests and resources</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://satsuite.collegeboard.org/', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -174,7 +174,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Career Assessment</span>
               </div>
               <p>Discover careers that match your interests and skills</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://www.mynextmove.org/explore/ip', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -185,7 +185,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Government Resource</span>
               </div>
               <p>Comprehensive career information including job outlook and salaries</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://www.bls.gov/ooh/', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
@@ -196,7 +196,7 @@ const ResourcesPage: React.FC = () => {
                 <span className="resource-type">Learning Platform</span>
               </div>
               <p>Professional skill development and career insights</p>
-              <button className="visit-resource-btn">
+              <button className="visit-resource-btn" onClick={() => window.open('https://www.linkedin.com/learning/', '_blank')}>
                 Visit Resource <span className="external-link">↗</span>
               </button>
             </div>
