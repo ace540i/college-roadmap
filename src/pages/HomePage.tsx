@@ -11,7 +11,7 @@ const HomePage: React.FC = () => {
         <div className="header-content">
           <div className="header-icon">📚</div>
           <div>
-            <h1>College Roadmap Overview</h1>
+            <h1>HiScholar College Roadmap Overview</h1>
             <p>Your complete guide to college preparation</p>
           </div>
         </div>
