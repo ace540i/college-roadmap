@@ -2,6 +2,7 @@ import React from 'react';
 import GradeCard from '../components/GradeCard';
 import QuickActions from '../components/QuickActions';
 import ImportantReminders from '../components/ImportantReminders';
+import Chatbot from '../components/Chatbot';
 
 const HomePage: React.FC = () => {
   return (
@@ -89,6 +90,9 @@ const HomePage: React.FC = () => {
 
         {/* Important Reminders */}
         <ImportantReminders />
+        
+        {/* Chatbot widget (floating) */}
+        <Chatbot />
       </div>
     </>
   );

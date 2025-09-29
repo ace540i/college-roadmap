@@ -800,6 +800,126 @@ h2 {
   background: #34a853;
 }
 
+/* Chatbot widget styles */
+.chatbot-root {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 9999;
+  font-family: inherit;
+}
+
+.chatbot-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1a73e8, #3367d6);
+  color: white;
+  border: none;
+  box-shadow: 0 8px 20px rgba(51, 103, 214, 0.3);
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+
+.chatbot-window {
+  width: 320px;
+  max-width: calc(100vw - 48px);
+  height: 420px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 12px 40px rgba(33, 37, 41, 0.15);
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatbot-header {
+  padding: 12px 14px;
+  background: linear-gradient(90deg, #4285f4, #3367d6);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbot-header-actions button {
+  margin-left: 8px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.chatbot-messages {
+  padding: 12px;
+  flex: 1 1 auto;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: #f7f9fc;
+}
+
+.chatbot-message {
+  max-width: 85%;
+  display: inline-block;
+}
+
+.chatbot-message.bot {
+  align-self: flex-start;
+  background: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #e8eef7;
+}
+
+.chatbot-message.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #1a73e8, #3367d6);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 12px;
+}
+
+.chatbot-input-area {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid #e6eefc;
+  background: white;
+}
+
+.chatbot-input {
+  flex: 1 1 auto;
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e8eef7;
+}
+
+.chatbot-send {
+  background: #1a73e8;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.chatbot-clear {
+  background: rgba(255,255,255,0.12);
+  border: none;
+  color: white;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 480px) {
+  .chatbot-window { width: 92vw; height: 60vh; right: 8px; bottom: 8px; }
+  .chatbot-root { right: 8px; bottom: 8px; }
+}
+
 .grade-10-tab.active {
   background: #1a73e8;
 }
