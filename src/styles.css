@@ -20,8 +20,24 @@ body {
 .header {
   background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
   color: white;
-  padding: 2rem 0;
+  padding: 0;
   box-shadow: 0 4px 20px rgba(66, 133, 244, 0.3);
+  height: 100px; /* Increased height to accommodate icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  position: relative;
+  margin: 0;
+  width: 100%;
+}
+
+/* Header expands beyond main content when sidebar is collapsed */
+.main-content.sidebar-collapsed .header {
+  position: relative;
+  left: -3rem; /* Offset the main content padding */
+  width: calc(100% + 4rem); /* Expand to cover the padding */
+  margin-left: 0;
 }
 
 .header-content {
@@ -30,7 +46,18 @@ body {
   padding: 0 2rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 1rem;
+  transition: all 0.3s ease;
+  flex: 1;
+}
+
+/* Header content adjusts when sidebar is collapsed */
+.main-content.sidebar-collapsed .header-content {
+  max-width: 100%;
+  padding: 0 4rem; /* Account for toggle button space and maintain alignment */
+  margin: 0 auto;
+  justify-content: center;
 }
 
 .header-icon {
@@ -41,16 +68,43 @@ body {
   backdrop-filter: blur(10px);
 }
 
+/* Back button in header */
+.header .back-button {
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  z-index: 10;
+}
+
+.header .back-button a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header .back-button a:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .header h1 {
   font-size: 2.2rem;
   font-weight: 700;
   margin-bottom: 0.3rem;
+  text-align: center;
 }
 
 .header p {
   font-size: 1.1rem;
   opacity: 0.9;
   font-weight: 400;
+  text-align: center;
 }
 
 /* Container */
@@ -361,6 +415,7 @@ h2 {
 .grade-detail-page {
   min-height: 100vh;
   background-color: #f5f6fa;
+  padding-top: 0; /* Ensure no extra padding at top */
 }
 
 .page-header {
@@ -429,7 +484,7 @@ h2 {
 
 .page-content {
   max-width: 1200px;
-  margin: -2rem auto 0;
+  margin: 2rem auto 0;
   padding: 0 2rem 3rem 2rem;
   position: relative;
   z-index: 1;
@@ -1329,5 +1384,454 @@ h2 {
   
   .resource-type {
     align-self: flex-start;
+  }
+}
+
+/* =============================================
+   SIDEBAR STYLES
+   ============================================= */
+
+/* App Layout */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.hamburger-icon {
+  font-size: 1.2rem;
+  display: block;
+}
+
+
+
+/* Sidebar Overlay */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 300px;
+  background: #ffffff;
+  border-right: 1px solid #e1e8ed;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  flex-shrink: 0; /* Prevent sidebar from shrinking */
+  overflow: hidden;
+}
+
+/* On desktop, sidebar is visible by default */
+@media (min-width: 769px) {
+  .sidebar.collapsed {
+    width: 0; /* Remove width when collapsed to free up space */
+    min-width: 0;
+    max-width: 0;
+    border-right: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* On mobile, sidebar is positioned fixed when visible */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+  }
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  padding: 0 0.75rem 0 0.5rem;
+  border-bottom: 1px solid #e1e8ed;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+  color: white;
+  box-shadow: 0 4px 20px rgba(66, 133, 244, 0.3);
+  height: 100px; /* Increased height to match main header */
+  margin: 0;
+  box-sizing: border-box;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.logo-icon {
+  font-size: 1.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.6rem;
+  backdrop-filter: blur(10px);
+}
+
+/* Sidebar Hamburger Button */
+.sidebar-hamburger {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  border-radius: 6px;
+  padding: 0.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  min-width: 36px;
+  min-height: 36px;
+  margin-left: 0.25rem;
+}
+
+.sidebar-hamburger:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.sidebar-hamburger .hamburger-icon {
+  font-size: 1.2rem;
+}
+
+/* Fixed Toggle Button (when sidebar is collapsed) */
+.sidebar-toggle-fixed {
+  position: fixed;
+  top: 1.25rem;
+  left: 0.5rem;
+  z-index: 1002;
+  background: linear-gradient(135deg, #4285f4 0%, #3367d6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(66, 133, 244, 0.4);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  min-height: 48px;
+}
+
+.sidebar-toggle-fixed:hover {
+  background: linear-gradient(135deg, #3367d6 0%, #2a5298 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(66, 133, 244, 0.5);
+}
+
+/* Sidebar Content */
+.sidebar-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem 0;
+}
+
+/* Home Link */
+.sidebar-home-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  color: #2c3e50;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+  margin-bottom: 1rem;
+}
+
+.sidebar-home-link:hover {
+  background: #f8f9fa;
+  color: #4285f4;
+}
+
+.sidebar-home-link.active {
+  background: #e3f2fd;
+  color: #4285f4;
+  border-left-color: #4285f4;
+}
+
+.home-icon {
+  font-size: 1.2rem;
+}
+
+/* Menu Items */
+.menu-items {
+  padding: 0;
+}
+
+.menu-item {
+  margin-bottom: 0.5rem;
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.menu-header:hover {
+  background: #f8f9fa;
+}
+
+.menu-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.menu-icon {
+  font-size: 1.1rem;
+}
+
+.menu-arrow {
+  font-size: 0.8rem;
+  color: #6c757d;
+  transition: transform 0.2s ease;
+}
+
+.menu-arrow.expanded {
+  transform: rotate(180deg);
+}
+
+/* Submenu */
+.submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  background: #f8f9fa;
+  border-left: 3px solid #e9ecef;
+  margin-left: 1rem;
+  margin-right: 0.5rem;
+  border-radius: 0 8px 8px 0;
+}
+
+.submenu.expanded {
+  max-height: 400px;
+}
+
+.submenu-item {
+  display: block;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+  color: #2c3e50;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid #e9ecef;
+  border-left: 3px solid transparent;
+}
+
+.submenu-item:last-child {
+  border-bottom: none;
+}
+
+.submenu-item:hover {
+  background: #e3f2fd;
+  color: #4285f4;
+  border-left-color: #4285f4;
+}
+
+.submenu-item.active {
+  background: #e3f2fd;
+  color: #4285f4;
+  border-left-color: #4285f4;
+  font-weight: 500;
+}
+
+.submenu-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.submenu-title {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.submenu-description {
+  font-size: 0.8rem;
+  color: #6c757d;
+  line-height: 1.4;
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #e1e8ed;
+  background: #f8f9fa;
+}
+
+.sidebar-user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.user-avatar {
+  width: 40px;
+  height: 40px;
+  background: #4285f4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.2rem;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.user-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #2c3e50;
+}
+
+.user-status {
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+/* Main Content */
+.main-content {
+  flex: 1;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: 4rem; /* Account for toggle buttons on mobile */
+  transition: all 0.3s ease;
+}
+
+.main-content.sidebar-collapsed {
+  margin-left: 0;
+  padding-top: 4rem;
+}
+
+/* Desktop specific adjustments */
+@media (min-width: 769px) {
+  .main-content {
+    padding-top: 0;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    margin-top: 0;
+  }
+  
+  .main-content.sidebar-collapsed {
+    padding-top: 0;
+    padding-left: 3rem; /* Account for fixed toggle button when sidebar is closed */
+    padding-right: 1rem;
+    margin-left: 0;
+    margin-top: 0;
+  }
+}
+
+/* Page Placeholder */
+.page-placeholder {
+  padding: 2rem;
+  text-align: center;
+  max-width: 600px;
+  margin: 2rem auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-placeholder h2 {
+  color: #4285f4;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.page-placeholder p {
+  color: #6c757d;
+  font-size: 1.1rem;
+}
+
+/* =============================================
+   RESPONSIVE DESIGN
+   ============================================= */
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+  }
+  
+  .sidebar-overlay {
+    display: block;
+  }
+  
+  .sidebar.collapsed ~ .sidebar-overlay {
+    display: none;
+  }
+  
+
+  
+  .main-content {
+    width: 100%;
+    padding-top: 4rem; /* Account for toggle button */
+  }
+  
+  .main-content.sidebar-collapsed {
+    width: 100vw;
+    padding-left: 3rem; /* Account for fixed toggle on mobile too */
+  }
+  
+  .app-layout {
+    flex-direction: column;
+  }
+}
+
+/* Tablet Styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .sidebar {
+    width: 280px;
+  }
+}
+
+/* Large Desktop */
+@media (min-width: 1400px) {
+  .sidebar {
+    width: 320px;
   }
 }

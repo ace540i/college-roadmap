@@ -4,18 +4,18 @@ import { Link } from 'react-router-dom';
 const Grade11Page: React.FC = () => {
   return (
     <div className="grade-detail-page">
-      <div className="page-header">
-        <div className="back-button">
-          <Link to="/">← Back to Overview</Link>
-        </div>
-        <div className="grade-header-content">
-          <div className="grade-number-large grade-11">11</div>
+      {/* Header */}
+      <header className="header">
+        <div className="header-content">
           <div>
             <h1>11th Grade: Preparation Intensive</h1>
             <p>The most critical year for college preparation</p>
           </div>
         </div>
-      </div>
+        <div className="back-button">
+          <Link to="/">← Back to Overview</Link>
+        </div>
+      </header>
 
       <div className="page-content">
         {/* Critical Year Alert */}
