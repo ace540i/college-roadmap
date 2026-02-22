@@ -1,0 +1,129 @@
+name: Provision Azure Infrastructure
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: "Deployment environment"
+        required: true
+        default: "prod"
+        type: choice
+        options:
+          - prod
+          - staging
+      tf_action:
+        description: "Terraform action to run"
+        required: true
+        default: "apply"
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  TF_BACKEND_RESOURCE_GROUP: ${{ secrets.TF_BACKEND_RESOURCE_GROUP }}
+
+jobs:
+  provision:
+    name: "Terraform ${{ inputs.tf_action }} [${{ inputs.environment }}]"
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.environment }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: >-
+            {
+              "clientId": "${{ secrets.ARM_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.ARM_CLIENT_SECRET }}",
+              "subscriptionId": "${{ secrets.ARM_SUBSCRIPTION_ID }}",
+              "tenantId": "${{ secrets.ARM_TENANT_ID }}"
+            }
+
+      # Ensures the tfstate container exists in tfstatemike2.
+      # Safe to re-run — idempotent (|| true swallows "already exists" errors).
+      - name: Bootstrap Terraform State Backend
+        run: |
+          az storage container create \
+            --name "college-cont-tfstate1" \
+            --account-name "tfstatecollege1" \
+            --resource-group "$TF_BACKEND_RESOURCE_GROUP" \
+            --output none 2>/dev/null || true
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.9"
+
+      - name: Terraform Init
+        working-directory: terraform
+        run: |
+          terraform init \
+            -backend-config="resource_group_name=$TF_BACKEND_RESOURCE_GROUP"
+
+      - name: Terraform Format Check
+        working-directory: terraform
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        working-directory: terraform
+        run: terraform validate
+
+      - name: Terraform Plan
+        working-directory: terraform
+        run: |
+          terraform plan \
+            -var="environment=${{ inputs.environment }}" \
+            -out=tfplan \
+            -detailed-exitcode
+        continue-on-error: true
+        id: plan
+
+      - name: Post Plan Summary
+        if: inputs.tf_action == 'plan' || inputs.tf_action == 'apply'
+        run: |
+          echo "### Terraform Plan Result" >> $GITHUB_STEP_SUMMARY
+          echo "Exit code: ${{ steps.plan.outputs.exitcode }}" >> $GITHUB_STEP_SUMMARY
+          if [ "${{ steps.plan.outputs.exitcode }}" = "0" ]; then
+            echo "No changes — infrastructure is up to date." >> $GITHUB_STEP_SUMMARY
+          elif [ "${{ steps.plan.outputs.exitcode }}" = "2" ]; then
+            echo "Changes detected — review the plan above." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "Plan failed. Check the logs for errors." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+      - name: Terraform Apply
+        if: inputs.tf_action == 'apply' && steps.plan.outputs.exitcode != '1'
+        working-directory: terraform
+        run: terraform apply -auto-approve tfplan
+
+      - name: Terraform Destroy
+        if: inputs.tf_action == 'destroy'
+        working-directory: terraform
+        run: |
+          terraform plan \
+            -destroy \
+            -var="environment=${{ inputs.environment }}" \
+            -out=tfplan
+          terraform apply -auto-approve tfplan
+
+      - name: Output Provisioned Resources
+        if: inputs.tf_action == 'apply' && steps.plan.outputs.exitcode != '1'
+        working-directory: terraform
+        run: |
+          echo "### Provisioned Resources" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "| --- | --- |" >> $GITHUB_STEP_SUMMARY
+          echo "| App Service URL | $(terraform output -raw app_service_url) |" >> $GITHUB_STEP_SUMMARY
+          echo "| App Service Name | $(terraform output -raw app_service_name) |" >> $GITHUB_STEP_SUMMARY
+          echo "| Resource Group | $(terraform output -raw resource_group_name) |" >> $GITHUB_STEP_SUMMARY

@@ -21,3 +21,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# server dependencies
+/server/node_modules
+
+# Terraform — state and plan files are in terraform/.gitignore
+# Lock file IS committed so provider versions are pinned
+.env.terraform
