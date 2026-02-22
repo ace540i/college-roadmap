@@ -78,7 +78,7 @@ resource "azurerm_linux_web_app" "main" {
 
   site_config {
     # always_on is not supported on the Free (F1) tier
-    always_on = var.sku_name != "F1"
+    always_on     = var.sku_name != "F1"
     http2_enabled = true
 
     application_stack {
