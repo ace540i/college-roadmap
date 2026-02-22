@@ -13,7 +13,7 @@ variable "resource_group_name" {
 variable "location" {
   description = "Azure region for all resources."
   type        = string
-  default     = "eastus2"
+  default     = "eastus"
 }
 
 variable "environment" {
@@ -35,7 +35,7 @@ variable "sku_name" {
       P1v3 — Premium v3 (best price/performance for production)
   EOT
   type        = string
-  default     = "F1"
+  default     = "B1"
 }
 
 variable "node_version" {
