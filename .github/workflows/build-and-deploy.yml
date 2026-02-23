@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - master
-  pull_request:
-    types: [closed]
-    branches:
-      - master
   workflow_dispatch:
 
 jobs:
@@ -24,27 +20,20 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies
-        run: |
-          cd src
-          npm install
+      - name: Install root dependencies
+        run: npm install
 
       - name: Build React app
-        run: |
-          cd src
-          npm run build
+        run: npm run build
 
-      - name: Build API (if needed)
-        run: |
-          cd server
-          npm install
+      - name: Install server dependencies
+        run: cd server && npm install --omit=dev
 
       - name: Package deployment artifact
         run: |
           mkdir -p deploy
-          cp -r src/build/* deploy/
+          cp -r build deploy/
           cp -r server deploy/
-          cp src/package.json deploy/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -72,8 +61,9 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
-          package: ./college-roadmap-app
+          package: .
 
       - name: Post-deployment health check
         run: |
-          curl -I https://${{ secrets.AZURE_WEBAPP_NAME }}.azurewebsites.net
+          sleep 30
+          curl -f https://${{ secrets.AZURE_WEBAPP_NAME }}.azurewebsites.net/api/health
