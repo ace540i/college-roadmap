@@ -5,6 +5,7 @@ on:
     branches:
       - master
   pull_request:
+    types: [closed]
     branches:
       - master
   workflow_dispatch:
@@ -43,7 +44,7 @@ jobs:
           mkdir -p deploy
           cp -r src/build/* deploy/
           cp -r server deploy/
-          cp -r src/package.json deploy/
+          cp src/package.json deploy/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
