@@ -1,6 +1,14 @@
 name: Provision Azure Infrastructure
 
 on:
+  # Auto-run apply on master when any Terraform file changes
+  push:
+    branches:
+      - master
+    paths:
+      - "terraform/**"
+
+  # Manual run with full control over environment and action
   workflow_dispatch:
     inputs:
       environment:
@@ -30,9 +38,9 @@ env:
 
 jobs:
   provision:
-    name: "Terraform ${{ inputs.tf_action }} [${{ inputs.environment }}]"
+    name: "Terraform ${{ inputs.tf_action || 'apply' }} [${{ inputs.environment || 'prod' }}]"
     runs-on: ubuntu-latest
-    environment: ${{ inputs.environment }}
+    environment: ${{ inputs.environment || 'prod' }}
 
     steps:
       - name: Checkout
@@ -82,14 +90,14 @@ jobs:
         working-directory: terraform
         run: |
           terraform plan \
-            -var="environment=${{ inputs.environment }}" \
+            -var="environment=${{ inputs.environment || 'prod' }}" \
             -out=tfplan \
             -detailed-exitcode
         continue-on-error: true
         id: plan
 
       - name: Post Plan Summary
-        if: inputs.tf_action == 'plan' || inputs.tf_action == 'apply'
+        if: (inputs.tf_action || 'apply') == 'plan' || (inputs.tf_action || 'apply') == 'apply'
         run: |
           echo "### Terraform Plan Result" >> $GITHUB_STEP_SUMMARY
           echo "Exit code: ${{ steps.plan.outputs.exitcode }}" >> $GITHUB_STEP_SUMMARY
@@ -103,7 +111,7 @@ jobs:
           fi
 
       - name: Terraform Apply
-        if: inputs.tf_action == 'apply' && steps.plan.outputs.exitcode != '1'
+        if: (inputs.tf_action || 'apply') == 'apply' && steps.plan.outputs.exitcode != '1'
         working-directory: terraform
         run: terraform apply -auto-approve tfplan
 
@@ -113,12 +121,12 @@ jobs:
         run: |
           terraform plan \
             -destroy \
-            -var="environment=${{ inputs.environment }}" \
+            -var="environment=${{ inputs.environment || 'prod' }}" \
             -out=tfplan
           terraform apply -auto-approve tfplan
 
       - name: Output Provisioned Resources
-        if: inputs.tf_action == 'apply' && steps.plan.outputs.exitcode != '1'
+        if: (inputs.tf_action || 'apply') == 'apply' && steps.plan.outputs.exitcode != '1'
         working-directory: terraform
         run: |
           echo "### Provisioned Resources" >> $GITHUB_STEP_SUMMARY
