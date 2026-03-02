@@ -83,14 +83,8 @@ resource "azurerm_linux_web_app" "main" {
     # Tell Node.js it's in production so Express disables error stack traces, etc.
     NODE_ENV = var.environment == "prod" ? "production" : "development"
 
-    # Run the app directly from the deployed zip package (faster cold starts).
-    WEBSITE_RUN_FROM_PACKAGE = "1"
-
-    # Disable Oryx build on deployment — we ship a pre-built artifact.
+    # Disable Oryx build on deployment — we ship a pre-built artifact with node_modules.
     SCM_DO_BUILD_DURING_DEPLOYMENT = "false"
-
-    # Disable persistent storage (stateless 12-factor app).
-    WEBSITES_ENABLE_APP_SERVICE_STORAGE = "false"
   }
 
   tags = local.common_tags
