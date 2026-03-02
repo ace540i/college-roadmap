@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Sidebar from './Sidebar';
+import TopBar from './TopBar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -7,27 +8,12 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
-    // Show sidebar by default on desktop, check screen size
+    // Open on desktop, collapsed on mobile
     if (typeof window !== 'undefined') {
       return window.innerWidth <= 768;
     }
     return false;
   });
-
-  // Load sidebar state from localStorage on mount
-  useEffect(() => {
-    const savedCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    const isDesktop = window.innerWidth > 768;
-    
-    // On desktop, default to showing sidebar unless explicitly collapsed
-    // On mobile, default to collapsed unless explicitly opened
-    setSidebarCollapsed(isDesktop ? savedCollapsed : true);
-  }, []);
-
-  // Save sidebar state to localStorage whenever it changes
-  useEffect(() => {
-    localStorage.setItem('sidebarCollapsed', sidebarCollapsed.toString());
-  }, [sidebarCollapsed]);
 
   const toggleSidebarCollapse = () => {
     setSidebarCollapsed(!sidebarCollapsed);
@@ -60,9 +46,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       )}
 
       {/* Main Content */}
-      <main className={`main-content ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        {children}
-      </main>
+      <div className={`main-content ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+        <main className="main-inner">
+          {children}
+        </main>
+        <TopBar />
+      </div>
     </div>
   );
 };
