@@ -6,10 +6,6 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 4.0"
     }
-    random = {
-      source  = "hashicorp/random"
-      version = "~> 3.6"
-    }
   }
 
   # storage_account_name, container_name, and key are fixed here.
@@ -26,14 +22,7 @@ provider "azurerm" {
   features {}
 }
 
-# Unique suffix so App Service names don't collide across Azure tenants.
-resource "random_integer" "suffix" {
-  min = 1000
-  max = 9999
-}
-
 locals {
-  name_suffix = random_integer.suffix.result
   common_tags = {
     project     = var.app_name
     environment = var.environment
@@ -70,7 +59,7 @@ resource "azurerm_service_plan" "main" {
 #   • Handles /api/* routes for the backend
 # ---------------------------------------------------------------------------
 resource "azurerm_linux_web_app" "main" {
-  name                = "app-${var.app_name}-${local.name_suffix}-${var.environment}"
+  name                = "app-${var.app_name}-${var.name_suffix}-${var.environment}"
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   service_plan_id     = azurerm_service_plan.main.id
