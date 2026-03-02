@@ -95,7 +95,7 @@ RESPONSE=$(curl -s -w "\n%{http_code}" \
 )
 
 HTTP_CODE=$(echo "$RESPONSE" | tail -1)
-BODY=$(echo "$RESPONSE" | head -n -1)
+BODY=$(echo "$RESPONSE" | sed '$d')
 
 if [[ "$HTTP_CODE" == "201" ]]; then
   PR_URL=$(echo "$BODY" | grep -o '"html_url": *"[^"]*"' | head -1 | sed 's/"html_url": *"\(.*\)"/\1/')
