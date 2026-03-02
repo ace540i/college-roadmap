@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../auth/AuthContext';
-
 interface MenuItem {
   id: string;
   title: string;
@@ -23,7 +21,6 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
-  const { user, logout } = useAuth();
   const [expandedMenus, setExpandedMenus] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('expandedMenus');
     return saved ? new Set(JSON.parse(saved)) : new Set(['grade-levels']);
