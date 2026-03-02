@@ -43,7 +43,7 @@ variable "node_version" {
   type        = string
   default     = "20-lts"
 }
-
+# app name suffix
 variable "name_suffix" {
   description = "Fixed suffix appended to the App Service name to ensure global uniqueness. Change only if there is a name collision in Azure."
   type        = string
