@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../auth/AuthContext';
 
 interface MenuItem {
   id: string;
@@ -22,6 +23,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
+  const { user, logout } = useAuth();
   const [expandedMenus, setExpandedMenus] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('expandedMenus');
     return saved ? new Set(JSON.parse(saved)) : new Set(['grade-levels']);
@@ -174,10 +176,9 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
 
         <div className="sidebar-content">
           {/* Home Link */}
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className={`sidebar-home-link ${isActiveLink('/') ? 'active' : ''}`}
-            onClick={onToggle}
           >
             <span className="home-icon">🏠</span>
             <span>Home</span>
@@ -203,11 +204,10 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
                 {/* Submenu */}
                 <div className={`submenu ${expandedMenus.has(menu.id) ? 'expanded' : ''}`}>
                   {menu.items?.map((item) => (
-                    <Link 
+                    <Link
                       key={item.id}
                       to={item.link}
                       className={`submenu-item ${isActiveLink(item.link) ? 'active' : ''}`}
-                      onClick={onToggle}
                     >
                       <div className="submenu-content">
                         <span className="submenu-title">{item.title}</span>
@@ -221,16 +221,6 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
           </div>
         </div>
 
-        {/* Sidebar Footer */}
-        <div className="sidebar-footer">
-          <div className="sidebar-user-info">
-            <div className="user-avatar">👤</div>
-            <div className="user-details">
-              <span className="user-name">Student</span>
-              <span className="user-status">High School</span>
-            </div>
-          </div>
-        </div>
       </nav>
     </>
   );
