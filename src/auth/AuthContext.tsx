@@ -20,16 +20,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const user = accounts[0] ?? null;
 
   const login = async () => {
-    try {
-      await msalInstance.loginPopup(loginRequest);
-    } catch (err: any) {
-      if (err?.errorCode === 'user_cancelled') return;
-      throw err;
-    }
+    await msalInstance.loginRedirect(loginRequest);
   };
 
   const logout = () => {
-    msalInstance.logoutPopup({ account: user });
+    msalInstance.logoutRedirect({ account: user });
   };
 
   return (
