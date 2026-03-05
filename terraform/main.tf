@@ -129,4 +129,9 @@ resource "azurerm_cosmosdb_mongo_database" "main" {
   name                = var.db_name
   resource_group_name = azurerm_resource_group.main.name
   account_name        = azurerm_cosmosdb_account.main.name
+
+  # Shared throughput at the database level — all containers share this pool.
+  # 400 RU/s is well within the free tier's 1,000 RU/s allowance regardless
+  # of how many collections Mongoose creates.
+  throughput = 400
 }
