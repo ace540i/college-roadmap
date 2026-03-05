@@ -53,12 +53,6 @@ variable "name_suffix" {
 # ---------------------------------------------------------------------------
 # Database variables
 # ---------------------------------------------------------------------------
-variable "db_location" {
-  description = "Azure region for the PostgreSQL Flexible Server. May differ from var.location if the subscription has quota restrictions in that region."
-  type        = string
-  default     = "eastus2"
-}
-
 variable "db_admin_username" {
   description = "Administrator login for the PostgreSQL Flexible Server."
   type        = string

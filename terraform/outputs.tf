@@ -24,16 +24,16 @@ output "app_service_id" {
 }
 
 output "database_hostname" {
-  description = "Fully qualified hostname of the PostgreSQL Flexible Server."
-  value       = azurerm_postgresql_flexible_server.main.fqdn
+  description = "Fully qualified domain name of the Azure SQL Server."
+  value       = azurerm_mssql_server.main.fully_qualified_domain_name
 }
 
 output "database_name" {
-  description = "Name of the PostgreSQL database."
-  value       = azurerm_postgresql_flexible_server_database.main.name
+  description = "Name of the Azure SQL Database."
+  value       = azurerm_mssql_database.main.name
 }
 
 output "database_server_name" {
-  description = "Name of the PostgreSQL Flexible Server resource."
-  value       = azurerm_postgresql_flexible_server.main.name
+  description = "Name of the Azure SQL Server resource."
+  value       = azurerm_mssql_server.main.name
 }

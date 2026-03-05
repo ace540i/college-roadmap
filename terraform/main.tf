@@ -86,49 +86,44 @@ resource "azurerm_linux_web_app" "main" {
     # Disable Oryx build on deployment — we ship a pre-built artifact with node_modules.
     SCM_DO_BUILD_DURING_DEPLOYMENT = "false"
 
-    # PostgreSQL connection string consumed by Prisma in the Express server.
-    DATABASE_URL = "postgresql://${var.db_admin_username}:${var.db_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.db_name}?sslmode=require"
+    # SQL Server connection string consumed by Prisma in the Express server.
+    DATABASE_URL = "sqlserver://${azurerm_mssql_server.main.fully_qualified_domain_name}:1433;database=${var.db_name};user=${var.db_admin_username};password=${var.db_admin_password};encrypt=true;trustServerCertificate=false"
   }
 
   tags = local.common_tags
 }
 
 # ---------------------------------------------------------------------------
-# Azure Database for PostgreSQL Flexible Server
+# Azure SQL Database (SQL Server)
 #
-# Burstable B1ms (1 vCore, 2 GB RAM) — cheapest production-ready tier.
-# ~$12–15/month. Upgrade sku_name to GP_Standard_D2s_v3 for more throughput.
+# Basic tier ~$5/month — 5 DTUs, 2 GB storage.
+# Upgrade sku_name to "S0" (~$15/month) or "S1" (~$30/month) as needed.
+# Works in eastus — no offer restriction like PostgreSQL Flexible Server.
 # ---------------------------------------------------------------------------
-resource "azurerm_postgresql_flexible_server" "main" {
-  name                = "psql-${var.app_name}-${var.name_suffix}-${var.environment}"
-  location            = var.db_location
-  resource_group_name = azurerm_resource_group.main.name
-
-  version                = "16"
-  administrator_login    = var.db_admin_username
-  administrator_password = var.db_admin_password
-
-  storage_mb                   = 32768 # 32 GB minimum
-  backup_retention_days        = 7
-  geo_redundant_backup_enabled = false
-
-  sku_name = "B_Standard_B1ms"
+resource "azurerm_mssql_server" "main" {
+  name                         = "sql-${var.app_name}-${var.name_suffix}-${var.environment}"
+  location                     = azurerm_resource_group.main.location
+  resource_group_name          = azurerm_resource_group.main.name
+  version                      = "12.0"
+  administrator_login          = var.db_admin_username
+  administrator_login_password = var.db_admin_password
 
   tags = local.common_tags
 }
 
-resource "azurerm_postgresql_flexible_server_database" "main" {
+resource "azurerm_mssql_database" "main" {
   name      = var.db_name
-  server_id = azurerm_postgresql_flexible_server.main.id
-  collation = "en_US.utf8"
-  charset   = "utf8"
+  server_id = azurerm_mssql_server.main.id
+  sku_name  = "Basic" # ~$5/month — 5 DTUs, 2 GB, always on. Upgrade to S0 ($15/mo) as needed.
+
+  tags = local.common_tags
 }
 
-# Allow all Azure-hosted services (App Service) to reach the PostgreSQL server.
+# Allow all Azure-hosted services (App Service) to reach the SQL Server.
 # The 0.0.0.0 → 0.0.0.0 rule is Azure's special flag for "Allow Azure services".
-resource "azurerm_postgresql_flexible_server_firewall_rule" "allow_azure_services" {
+resource "azurerm_mssql_firewall_rule" "allow_azure_services" {
   name             = "allow-azure-services"
-  server_id        = azurerm_postgresql_flexible_server.main.id
+  server_id        = azurerm_mssql_server.main.id
   start_ip_address = "0.0.0.0"
   end_ip_address   = "0.0.0.0"
 }
