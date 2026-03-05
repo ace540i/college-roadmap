@@ -23,17 +23,17 @@ output "app_service_id" {
   value       = azurerm_linux_web_app.main.id
 }
 
-output "database_hostname" {
-  description = "Fully qualified domain name of the Azure SQL Server."
-  value       = azurerm_mssql_server.main.fully_qualified_domain_name
+output "cosmosdb_account_name" {
+  description = "Name of the Azure Cosmos DB account."
+  value       = azurerm_cosmosdb_account.main.name
+}
+
+output "cosmosdb_endpoint" {
+  description = "Endpoint URI of the Azure Cosmos DB account."
+  value       = azurerm_cosmosdb_account.main.endpoint
 }
 
 output "database_name" {
-  description = "Name of the Azure SQL Database."
-  value       = azurerm_mssql_database.main.name
-}
-
-output "database_server_name" {
-  description = "Name of the Azure SQL Server resource."
-  value       = azurerm_mssql_server.main.name
+  description = "Name of the Cosmos DB (MongoDB) database."
+  value       = azurerm_cosmosdb_mongo_database.main.name
 }

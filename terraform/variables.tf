@@ -43,36 +43,24 @@ variable "node_version" {
   type        = string
   default     = "20-lts"
 }
-# app name suffix
+
 variable "name_suffix" {
-  description = "Fixed suffix appended to the App Service name to ensure global uniqueness. Change only if there is a name collision in Azure."
+  description = "Fixed suffix appended to resource names to ensure global uniqueness. Change only if there is a name collision in Azure."
   type        = string
   default     = "cr1"
 }
 
 # ---------------------------------------------------------------------------
-# Database variables
+# Cosmos DB variables
 # ---------------------------------------------------------------------------
-variable "db_location" {
-  description = "Azure region for the SQL Server and database. Defaults to eastus2 — SQL Server provisioning is restricted in eastus for this subscription."
-  type        = string
-  default     = "eastus2"
-}
-
-variable "db_admin_username" {
-  description = "Administrator login for the Azure SQL Server."
-  type        = string
-  default     = "pgadmin"
-}
-
-variable "db_admin_password" {
-  description = "Administrator password for the Azure SQL Server. Must be at least 8 characters with uppercase, lowercase, digits, and a special character. Supply via GitHub secret TF_VAR_db_admin_password."
-  type        = string
-  sensitive   = true
+variable "cosmosdb_free_tier" {
+  description = "Enable the Cosmos DB free tier (1,000 RU/s + 25 GB free). Only one free tier account is allowed per subscription."
+  type        = bool
+  default     = true
 }
 
 variable "db_name" {
-  description = "Name of the Azure SQL database to create inside the server."
+  description = "Name of the Cosmos DB (MongoDB) database to create inside the account."
   type        = string
   default     = "collegeroadmap"
 }
