@@ -7,6 +7,7 @@ const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 
+const { connectDB } = require('./db');
 const apiRoutes = require('./routes/api');
 
 const app = express();
@@ -58,8 +59,15 @@ app.get('*', (_req, res) => {
 });
 
 // ---------------------------------------------------------------------------
-// Start
+// Start — connect to DB then begin listening
 // ---------------------------------------------------------------------------
-app.listen(PORT, () => {
-  console.log(`[server] Running on port ${PORT} (${IS_PROD ? 'production' : 'development'})`);
-});
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`[server] Running on port ${PORT} (${IS_PROD ? 'production' : 'development'})`);
+    });
+  })
+  .catch(err => {
+    console.error('[server] Failed to connect to database:', err.message);
+    process.exit(1);
+  });
