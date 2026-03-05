@@ -53,20 +53,26 @@ variable "name_suffix" {
 # ---------------------------------------------------------------------------
 # Database variables
 # ---------------------------------------------------------------------------
+variable "db_location" {
+  description = "Azure region for the SQL Server and database. Defaults to eastus2 — SQL Server provisioning is restricted in eastus for this subscription."
+  type        = string
+  default     = "eastus2"
+}
+
 variable "db_admin_username" {
-  description = "Administrator login for the PostgreSQL Flexible Server."
+  description = "Administrator login for the Azure SQL Server."
   type        = string
   default     = "pgadmin"
 }
 
 variable "db_admin_password" {
-  description = "Administrator password for the PostgreSQL Flexible Server. Must be at least 8 characters with uppercase, lowercase, digits, and a special character. Supply via GitHub secret TF_VAR_db_admin_password."
+  description = "Administrator password for the Azure SQL Server. Must be at least 8 characters with uppercase, lowercase, digits, and a special character. Supply via GitHub secret TF_VAR_db_admin_password."
   type        = string
   sensitive   = true
 }
 
 variable "db_name" {
-  description = "Name of the PostgreSQL database to create inside the server."
+  description = "Name of the Azure SQL database to create inside the server."
   type        = string
   default     = "collegeroadmap"
 }

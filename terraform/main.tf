@@ -98,11 +98,12 @@ resource "azurerm_linux_web_app" "main" {
 #
 # Basic tier ~$5/month — 5 DTUs, 2 GB storage.
 # Upgrade sku_name to "S0" (~$15/month) or "S1" (~$30/month) as needed.
-# Works in eastus — no offer restriction like PostgreSQL Flexible Server (OfferRestricted).
+# Uses var.db_location (eastus2) — SQL Server provisioning is restricted in eastus
+# for this subscription.
 # ---------------------------------------------------------------------------
 resource "azurerm_mssql_server" "main" {
   name                         = "sql-${var.app_name}-${var.name_suffix}-${var.environment}"
-  location                     = azurerm_resource_group.main.location
+  location                     = var.db_location
   resource_group_name          = azurerm_resource_group.main.name
   version                      = "12.0"
   administrator_login          = var.db_admin_username
