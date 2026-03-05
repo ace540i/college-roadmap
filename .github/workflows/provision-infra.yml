@@ -7,6 +7,7 @@ on:
       - master
     paths:
       - "terraform/**"
+      - ".github/workflows/provision-infra.yml"
 
   # Manual run with full control over environment and action
   workflow_dispatch:
