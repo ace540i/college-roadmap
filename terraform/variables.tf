@@ -49,3 +49,24 @@ variable "name_suffix" {
   type        = string
   default     = "cr1"
 }
+
+# ---------------------------------------------------------------------------
+# Database variables
+# ---------------------------------------------------------------------------
+variable "db_admin_username" {
+  description = "Administrator login for the PostgreSQL Flexible Server."
+  type        = string
+  default     = "pgadmin"
+}
+
+variable "db_admin_password" {
+  description = "Administrator password for the PostgreSQL Flexible Server. Must be at least 8 characters with uppercase, lowercase, digits, and a special character. Supply via GitHub secret TF_VAR_db_admin_password."
+  type        = string
+  sensitive   = true
+}
+
+variable "db_name" {
+  description = "Name of the PostgreSQL database to create inside the server."
+  type        = string
+  default     = "collegeroadmap"
+}
