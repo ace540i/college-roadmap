@@ -98,7 +98,7 @@ resource "azurerm_linux_web_app" "main" {
 #
 # Basic tier ~$5/month — 5 DTUs, 2 GB storage.
 # Upgrade sku_name to "S0" (~$15/month) or "S1" (~$30/month) as needed.
-# Works in eastus — no offer restriction like PostgreSQL Flexible Server.
+# Works in eastus — no offer restriction like PostgreSQL Flexible Server (OfferRestricted).
 # ---------------------------------------------------------------------------
 resource "azurerm_mssql_server" "main" {
   name                         = "sql-${var.app_name}-${var.name_suffix}-${var.environment}"
