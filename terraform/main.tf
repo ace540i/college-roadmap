@@ -104,8 +104,9 @@ resource "azurerm_cosmosdb_account" "main" {
   location            = azurerm_resource_group.main.location
   resource_group_name = azurerm_resource_group.main.name
   offer_type          = "Standard"
-  kind                = "MongoDB"
-  free_tier_enabled   = var.cosmosdb_free_tier
+  kind                 = "MongoDB"
+  mongo_server_version = "4.2"
+  free_tier_enabled    = var.cosmosdb_free_tier
 
   # MongoDB API capability
   capabilities {
