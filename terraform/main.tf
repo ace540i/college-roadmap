@@ -87,12 +87,7 @@ resource "azurerm_linux_web_app" "main" {
     SCM_DO_BUILD_DURING_DEPLOYMENT = "false"
 
     # Cosmos DB (MongoDB API) connection string consumed by Mongoose/Prisma in the Express server.
-    # Inserts the database name before the query string in the Cosmos DB connection string.
-    DATABASE_URL = replace(
-      azurerm_cosmosdb_account.main.connection_strings[0],
-      "/?ssl=true",
-      "/${var.db_name}?ssl=true"
-    )
+    DATABASE_URL = "mongodb://${azurerm_cosmosdb_account.main.name}:${azurerm_cosmosdb_account.main.primary_key}@${azurerm_cosmosdb_account.main.name}.mongo.cosmos.azure.com:10255/${var.db_name}?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@${azurerm_cosmosdb_account.main.name}@"
   }
 
   tags = local.common_tags
