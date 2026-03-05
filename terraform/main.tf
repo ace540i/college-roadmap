@@ -101,7 +101,7 @@ resource "azurerm_linux_web_app" "main" {
 # ---------------------------------------------------------------------------
 resource "azurerm_postgresql_flexible_server" "main" {
   name                = "psql-${var.app_name}-${var.name_suffix}-${var.environment}"
-  location            = azurerm_resource_group.main.location
+  location            = var.db_location
   resource_group_name = azurerm_resource_group.main.name
 
   version                = "16"
