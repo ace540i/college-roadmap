@@ -1,14 +1,16 @@
-'use strict';
+import { Router, Request, Response } from 'express';
+import Student from '../models/Student';
+import MilestoneCatalog from '../models/MilestoneCatalog';
+import Progress from '../models/Progress';
 
-const router = require('express').Router();
-const Student = require('../models/Student');
-const MilestoneCatalog = require('../models/MilestoneCatalog');
-const Progress = require('../models/Progress');
+const router = Router();
 
 // POST /api/progress — mark a task complete or incomplete
 // Body: { userId, taskId, completed, notes }
-router.post('/', async (req, res) => {
-  const { userId, taskId, completed, notes } = req.body;
+router.post('/', async (req: Request, res: Response) => {
+  const { userId, taskId, completed, notes } = req.body as {
+    userId?: string; taskId?: string; completed?: boolean; notes?: string;
+  };
   if (!userId || !taskId) {
     return res.status(400).json({ message: 'userId and taskId are required' });
   }
@@ -36,13 +38,13 @@ router.post('/', async (req, res) => {
     );
     res.json(result);
   } catch (err) {
-    console.error('[progress] POST error:', err.message);
+    console.error('[progress] POST error:', (err as Error).message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 // GET /api/progress/:userId — all progress records for a student
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', async (req: Request, res: Response) => {
   try {
     const student = await Student.findOne({ userId: req.params.userId });
     if (!student) return res.status(404).json({ message: 'Profile not found' });
@@ -50,9 +52,9 @@ router.get('/:userId', async (req, res) => {
     const records = await Progress.find({ studentId: student._id });
     res.json(records);
   } catch (err) {
-    console.error('[progress] GET error:', err.message);
+    console.error('[progress] GET error:', (err as Error).message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-module.exports = router;
+export default router;

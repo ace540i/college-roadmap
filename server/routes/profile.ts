@@ -1,11 +1,13 @@
-'use strict';
+import { Router, Request, Response } from 'express';
+import Student from '../models/Student';
 
-const router = require('express').Router();
-const Student = require('../models/Student');
+const router = Router();
 
 // POST /api/profile — upsert student on first login with CIAM claims
-router.post('/', async (req, res) => {
-  const { userId, displayName, email, grade } = req.body;
+router.post('/', async (req: Request, res: Response) => {
+  const { userId, displayName, email, grade } = req.body as {
+    userId?: string; displayName?: string; email?: string; grade?: number;
+  };
   if (!userId) return res.status(400).json({ message: 'userId is required' });
 
   try {
@@ -16,21 +18,21 @@ router.post('/', async (req, res) => {
     );
     res.json(student);
   } catch (err) {
-    console.error('[profile] POST error:', err.message);
+    console.error('[profile] POST error:', (err as Error).message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
 // GET /api/profile/:userId
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', async (req: Request, res: Response) => {
   try {
     const student = await Student.findOne({ userId: req.params.userId });
     if (!student) return res.status(404).json({ message: 'Profile not found' });
     res.json(student);
   } catch (err) {
-    console.error('[profile] GET error:', err.message);
+    console.error('[profile] GET error:', (err as Error).message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-module.exports = router;
+export default router;

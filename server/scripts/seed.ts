@@ -1,17 +1,20 @@
-'use strict';
-
 /**
  * Seed script — loads milestone/task catalog for grades 9-12 into Cosmos DB.
  *
  * Usage:
- *   node server/scripts/seed.js
+ *   npm run seed  (from server/)
  *
  * Requires DATABASE_URL to be set (loads from server/.env automatically).
  */
 
-require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') });
-const mongoose = require('mongoose');
-const MilestoneCatalog = require('../models/MilestoneCatalog');
+import 'dotenv/config';
+import path from 'path';
+import mongoose from 'mongoose';
+import MilestoneCatalog from '../models/MilestoneCatalog';
+
+// Load .env from server directory when run directly
+import { config } from 'dotenv';
+config({ path: path.join(__dirname, '..', '.env') });
 
 // ---------------------------------------------------------------------------
 // Catalog data — Grades 9–12
@@ -73,7 +76,7 @@ const catalog = [
         title: 'Plan your 4-year course schedule',
         description: 'Map out which courses you will take each year to meet graduation and college admission requirements.',
         steps: [
-          { order: 1, text: 'Get a copy of your school\'s course catalog' },
+          { order: 1, text: "Get a copy of your school's course catalog" },
           { order: 2, text: 'List required core courses (English, Math, Science, Social Studies, Foreign Language)' },
           { order: 3, text: 'Identify honors or AP courses available in grades 10–12 that interest you' },
           { order: 4, text: 'Review your draft plan with your counselor' },
@@ -115,7 +118,7 @@ const catalog = [
         title: 'Join at least one extracurricular activity',
         description: 'Colleges value sustained commitment — pick something you genuinely enjoy.',
         steps: [
-          { order: 1, text: 'Attend your school\'s club fair or activity night' },
+          { order: 1, text: "Attend your school's club fair or activity night" },
           { order: 2, text: 'Sign up for one club, sport, or arts program' },
           { order: 3, text: 'Attend at least 80% of meetings or practices through the school year' },
         ],
@@ -211,7 +214,7 @@ const catalog = [
         taskId: '10-2-2',
         order: 2,
         title: 'Set up Khan Academy SAT prep',
-        description: 'Khan Academy\'s free SAT prep is personalized and highly effective.',
+        description: "Khan Academy's free SAT prep is personalized and highly effective.",
         steps: [
           { order: 1, text: 'Create a free account at khanacademy.org' },
           { order: 2, text: 'Link your College Board account to get personalized practice from your PSAT scores' },
@@ -245,7 +248,7 @@ const catalog = [
         steps: [
           { order: 1, text: 'Use BigFuture, Niche.com, or College Navigator to search colleges by size, location, and major' },
           { order: 2, text: 'Add at least 5 schools per category: small, medium, and large' },
-          { order: 3, text: 'Note the average GPA and test scores for each school\'s admitted class' },
+          { order: 3, text: "Note the average GPA and test scores for each school's admitted class" },
         ],
       },
       {
@@ -255,7 +258,7 @@ const catalog = [
         description: 'College fairs let you talk directly with admissions representatives.',
         steps: [
           { order: 1, text: 'Ask your counselor about upcoming local or virtual college fairs' },
-          { order: 2, text: 'Prepare 2–3 questions to ask representatives (e.g., "What makes your school unique?"' },
+          { order: 2, text: 'Prepare 2–3 questions to ask representatives (e.g., "What makes your school unique?")' },
           { order: 3, text: 'Collect brochures or scan QR codes and add interesting schools to your list' },
         ],
       },
@@ -263,7 +266,7 @@ const catalog = [
         taskId: '10-3-3',
         order: 3,
         title: 'Visit or take a virtual tour of a local college',
-        description: 'Seeing a campus in person changes your sense of what \'fit\' means.',
+        description: "Seeing a campus in person changes your sense of what 'fit' means.",
         steps: [
           { order: 1, text: 'Choose one college within driving distance' },
           { order: 2, text: 'Sign up for an official campus tour through the admissions website' },
@@ -311,7 +314,7 @@ const catalog = [
         description: 'Many colleges are test-optional — understand when submitting scores helps or hurts.',
         steps: [
           { order: 1, text: 'Look up the test policy for each school on your list (College Board BigFuture lists these)' },
-          { order: 2, text: 'For test-optional schools, compare your score to the school\'s 50th percentile range' },
+          { order: 2, text: "For test-optional schools, compare your score to the school's 50th percentile range" },
           { order: 3, text: 'Decide for each school whether you plan to submit scores' },
         ],
       },
@@ -351,9 +354,9 @@ const catalog = [
         title: 'Research financial aid and net cost at each school',
         description: 'Cost after aid often differs dramatically from the sticker price.',
         steps: [
-          { order: 1, text: 'Use the Net Price Calculator on each school\'s website (required by law)' },
+          { order: 1, text: "Use the Net Price Calculator on each school's website (required by law)" },
           { order: 2, text: 'Research merit scholarship eligibility at each school' },
-          { order: 3, text: 'Discuss your family\'s estimated contribution with a parent or guardian' },
+          { order: 3, text: "Discuss your family's estimated contribution with a parent or guardian" },
         ],
       },
     ],
@@ -460,7 +463,7 @@ const catalog = [
         description: 'The FAFSA opens October 1 — filing early gives you access to more aid.',
         steps: [
           { order: 1, text: 'Create FSA IDs for yourself and a parent at studentaid.gov' },
-          { order: 2, text: 'Gather required tax documents (previous year\'s tax return and W-2s)' },
+          { order: 2, text: "Gather required tax documents (previous year's tax return and W-2s)" },
           { order: 3, text: 'Complete and submit the FAFSA at studentaid.gov by your earliest school deadline' },
           { order: 4, text: 'Review your Student Aid Report (SAR) for errors after submission' },
         ],
@@ -471,7 +474,7 @@ const catalog = [
         title: 'Complete the CSS Profile if required',
         description: 'Many private colleges require the CSS Profile in addition to FAFSA.',
         steps: [
-          { order: 1, text: 'Check each school\'s financial aid page to see if CSS Profile is required' },
+          { order: 1, text: "Check each school's financial aid page to see if CSS Profile is required" },
           { order: 2, text: 'Register at cssprofile.collegeboard.org' },
           { order: 3, text: 'Complete the profile and submit to each school that requires it — note separate deadlines' },
         ],
@@ -537,7 +540,7 @@ const catalog = [
 // ---------------------------------------------------------------------------
 // Run seed
 // ---------------------------------------------------------------------------
-async function seed() {
+async function seed(): Promise<void> {
   const uri = process.env.DATABASE_URL;
   if (!uri) {
     console.error('ERROR: DATABASE_URL is not set. Add it to server/.env and retry.');
@@ -573,7 +576,7 @@ async function seed() {
   console.log('\nDone.');
 }
 
-seed().catch(err => {
+seed().catch((err: Error) => {
   console.error('Seed failed:', err.message);
   process.exit(1);
 });
