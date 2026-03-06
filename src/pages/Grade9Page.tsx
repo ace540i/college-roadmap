@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useMilestones } from '../hooks/useMilestones';
+import MilestoneSection from '../components/MilestoneSection';
 
 const Grade9Page: React.FC = () => {
+  const { milestones, loading, error, toggleTask } = useMilestones(9);
+
+  const totalTasks     = milestones.reduce((s, m) => s + m.tasks.length, 0);
+  const completedTasks = milestones.reduce((s, m) => s + m.tasks.filter(t => t.completed).length, 0);
+  const percent        = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
   return (
     <div className="grade-detail-page">
       {/* Header */}
@@ -37,87 +45,26 @@ const Grade9Page: React.FC = () => {
           </div>
         </section>
 
-        {/* Seasonal Timeline */}
-        <section className="timeline-section">
-          <h2>📅 Yearly Timeline</h2>
-          
-          <div className="season-block">
-            <h3>Fall</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag college-prep">college prep</span>
-                <span className="tag fall">fall</span>
-              </div>
-              <h4>Meet with School Counselor</h4>
-              <p>Introduce yourself to your guidance counselor and discuss your academic goals</p>
-              <div className="milestone-status">○</div>
+        {/* Overall Progress */}
+        {!loading && !error && totalTasks > 0 && (
+          <section className="overall-progress-section">
+            <div className="overall-progress-bar">
+              <div className="overall-progress-fill" style={{ width: `${percent}%` }} />
             </div>
+            <p className="overall-progress-label">
+              Overall: {completedTasks} / {totalTasks} tasks complete ({percent}%)
+            </p>
+          </section>
+        )}
 
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag academics">academics</span>
-                <span className="tag fall">fall</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Take Challenging Core Classes</h4>
-              <p>Enroll in Honors or advanced classes in English, Mathematics, Science, and Social Studies to build a strong foundation</p>
-              <div className="milestone-status">○</div>
-            </div>
-
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag extracurricular">join extracurricular</span>
-                <span className="tag fall">fall</span>
-              </div>
-              <h4>Join Clubs and Activities</h4>
-              <p>Explore extracurricular activities that interest you. Try different clubs to find your passion</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Winter</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag academics">academics</span>
-                <span className="tag winter">winter</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Develop Study Habits</h4>
-              <p>Establish consistent study routines and time management skills</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Spring</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag extracurricular">extracurricular</span>
-                <span className="tag spring">spring</span>
-              </div>
-              <h4>Plan Summer Activities</h4>
-              <p>Look for summer programs, jobs, or volunteer opportunities that align with your interests</p>
-              <div className="milestone-status">○</div>
-            </div>
-
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag testing">testing</span>
-                <span className="tag spring">spring</span>
-              </div>
-              <h4>Consider PSAT 8/9</h4>
-              <p>Take the PSAT 8/9 for practice and to identify areas for improvement</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Summer</h3>
-            <div className="summer-message">
-              <p>No milestones scheduled for summer</p>
-            </div>
-          </div>
+        {/* Milestones */}
+        <section className="milestones-section">
+          <h2>📋 Milestones & Tasks</h2>
+          {loading && <p className="loading-msg">Loading milestones...</p>}
+          {error   && <p className="error-msg">Could not load milestones. Please try again.</p>}
+          {milestones.map(m => (
+            <MilestoneSection key={m._id} milestone={m} onToggle={toggleTask} />
+          ))}
         </section>
 
         {/* Pro Tips Section */}

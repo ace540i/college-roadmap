@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useMilestones } from '../hooks/useMilestones';
+import MilestoneSection from '../components/MilestoneSection';
 
 const Grade10Page: React.FC = () => {
+  const { milestones, loading, error, toggleTask } = useMilestones(10);
+
+  const totalTasks     = milestones.reduce((s, m) => s + m.tasks.length, 0);
+  const completedTasks = milestones.reduce((s, m) => s + m.tasks.filter(t => t.completed).length, 0);
+  const percent        = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
   return (
     <div className="grade-detail-page">
       {/* Header */}
@@ -37,65 +45,26 @@ const Grade10Page: React.FC = () => {
           </div>
         </section>
 
-        {/* Seasonal Timeline */}
-        <section className="timeline-section">
-          <h2>📅 Yearly Timeline</h2>
-          
-          <div className="season-block">
-            <h3>Fall</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag academics">academics</span>
-                <span className="tag fall">fall</span>
-              </div>
-              <h4>Consider First AP Course</h4>
-              <p>Research AP courses available at your school and consider taking your first one</p>
-              <div className="milestone-status">○</div>
+        {/* Overall Progress */}
+        {!loading && !error && totalTasks > 0 && (
+          <section className="overall-progress-section">
+            <div className="overall-progress-bar">
+              <div className="overall-progress-fill" style={{ width: `${percent}%` }} />
             </div>
-          </div>
+            <p className="overall-progress-label">
+              Overall: {completedTasks} / {totalTasks} tasks complete ({percent}%)
+            </p>
+          </section>
+        )}
 
-          <div className="season-block">
-            <h3>Winter</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag college-prep">college prep</span>
-                <span className="tag winter">winter</span>
-              </div>
-              <h4>Explore Career Interests</h4>
-              <p>Research different career paths and consider job shadowing or informational interviews</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Spring</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag extracurricular">extracurricular</span>
-                <span className="tag spring">spring</span>
-              </div>
-              <h4>Seek Leadership Roles</h4>
-              <p>Run for student government or officer positions in clubs you're passionate about</p>
-              <div className="milestone-status">○</div>
-            </div>
-
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag testing">testing</span>
-                <span className="tag spring">spring</span>
-              </div>
-              <h4>Take PSAT 10</h4>
-              <p>Take the PSAT 10 to prepare for the PSAT/NMSQT and identify areas to improve</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Summer</h3>
-            <div className="summer-message">
-              <p>No milestones scheduled for summer</p>
-            </div>
-          </div>
+        {/* Milestones */}
+        <section className="milestones-section">
+          <h2>📋 Milestones & Tasks</h2>
+          {loading && <p className="loading-msg">Loading milestones...</p>}
+          {error   && <p className="error-msg">Could not load milestones. Please try again.</p>}
+          {milestones.map(m => (
+            <MilestoneSection key={m._id} milestone={m} onToggle={toggleTask} />
+          ))}
         </section>
 
         {/* Success Strategies Section */}

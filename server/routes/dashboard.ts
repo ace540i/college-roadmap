@@ -32,13 +32,16 @@ router.get('/:userId', async (req: Request, res: Response) => {
         completedTasks,
         percent: totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0,
       },
-      milestones: milestones.map(m => ({
-        ...m.toObject(),
-        tasks: m.tasks.map(t => ({
-          ...t,
-          completed: completedTaskIds.has(t.taskId),
-        })),
-      })),
+      milestones: milestones.map(m => {
+        const obj = m.toObject();
+        return {
+          ...obj,
+          tasks: obj.tasks.map(t => ({
+            ...t,
+            completed: completedTaskIds.has(t.taskId),
+          })),
+        };
+      }),
     });
   } catch (err) {
     console.error('[dashboard] GET error:', (err as Error).message);

@@ -181,6 +181,24 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, onToggle }) => {
             <span>Home</span>
           </Link>
 
+          {/* Dashboard Link */}
+          <Link
+            to="/dashboard"
+            className={`sidebar-home-link ${isActiveLink('/dashboard') ? 'active' : ''}`}
+          >
+            <span className="home-icon">📊</span>
+            <span>Dashboard</span>
+          </Link>
+
+          {/* Profile Link */}
+          <Link
+            to="/profile"
+            className={`sidebar-home-link ${isActiveLink('/profile') ? 'active' : ''}`}
+          >
+            <span className="home-icon">👤</span>
+            <span>My Profile</span>
+          </Link>
+
           {/* Menu Items */}
           <div className="menu-items">
             {menuItems.map((menu) => (
