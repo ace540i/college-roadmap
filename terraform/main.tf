@@ -54,7 +54,7 @@ resource "azurerm_service_plan" "main" {
 # ---------------------------------------------------------------------------
 # App Service — Combined React + API
 #
-# Runs a Node.js Express server (server/index.js) that:
+# Runs a Node.js Express server (ts-node server/index.ts) that:
 #   • Serves the compiled React build from /build
 #   • Handles /api/* routes for the backend
 # ---------------------------------------------------------------------------
@@ -74,9 +74,9 @@ resource "azurerm_linux_web_app" "main" {
       node_version = var.node_version
     }
 
-    # Points to the Express server that serves both React and /api routes.
-    # The working directory is /home/site/wwwroot after deployment.
-    app_command_line = "node server/index.js"
+    # Starts the Express server (TypeScript via ts-node with transpileOnly).
+    # Working directory is /home/site/wwwroot after deployment.
+    app_command_line = "cd /home/site/wwwroot/server && npm start"
   }
 
   app_settings = {

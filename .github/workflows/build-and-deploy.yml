@@ -74,6 +74,7 @@ jobs:
         with:
           app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
           package: .
+          startup-command: 'cd /home/site/wwwroot/server && npm start'
 
       - name: Post-deployment health check
         run: |
