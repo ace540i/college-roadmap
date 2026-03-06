@@ -3,17 +3,27 @@ import Student from '../models/Student';
 
 const router = Router();
 
-// POST /api/profile — upsert student on first login with CIAM claims
+// POST /api/profile — upsert student on login or profile save
 router.post('/', async (req: Request, res: Response) => {
-  const { userId, displayName, email, grade } = req.body as {
+  const { userId, displayName, email, grade, firstName, middleName, lastName, state } = req.body as {
     userId?: string; displayName?: string; email?: string; grade?: number;
+    firstName?: string; middleName?: string; lastName?: string; state?: string;
   };
   if (!userId) return res.status(400).json({ message: 'userId is required' });
+
+  const update: Record<string, unknown> = { updatedAt: new Date() };
+  if (displayName  !== undefined) update.displayName  = displayName;
+  if (email        !== undefined) update.email        = email;
+  if (firstName    !== undefined) update.firstName    = firstName;
+  if (middleName   !== undefined) update.middleName   = middleName;
+  if (lastName     !== undefined) update.lastName     = lastName;
+  if (state        !== undefined) update.state        = state;
+  if (grade        !== undefined) update.grade        = grade;
 
   try {
     const student = await Student.findOneAndUpdate(
       { userId },
-      { displayName, email, updatedAt: new Date(), ...(grade && { grade }) },
+      update,
       { upsert: true, new: true, setDefaultsOnInsert: true }
     );
     res.json(student);

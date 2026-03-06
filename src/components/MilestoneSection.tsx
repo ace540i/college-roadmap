@@ -43,9 +43,9 @@ const MilestoneSection: React.FC<Props> = ({ milestone, onToggle }) => {
 
       {/* Task list */}
       <div className="milestone-tasks">
-        {milestone.tasks.map(task => (
+        {milestone.tasks.map((task, i) => (
           <label
-            key={task.taskId}
+            key={task.taskId ?? `task-${i}`}
             className={`task-row${task.completed ? ' task-completed' : ''}`}
           >
             <input

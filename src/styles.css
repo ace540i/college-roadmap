@@ -2519,3 +2519,227 @@ h2 {
 /* Loading / error states */
 .loading-msg { color: #9ca3af; font-style: italic; padding: 1.5rem 0; text-align: center; }
 .error-msg   { color: #ef4444; padding: 1rem 0; font-size: 0.9rem; }
+
+/* ============================================================
+   Dashboard Page
+   ============================================================ */
+
+.dashboard-page { min-height: 100vh; }
+
+/* Overall stats card */
+.dashboard-overall-section { margin-bottom: 2rem; }
+.dashboard-overall-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+.dashboard-overall-stats {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.dashboard-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 100px;
+}
+.dashboard-stat-value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4285f4;
+  line-height: 1;
+}
+.dashboard-stat-label {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  text-align: center;
+}
+
+/* Per-grade grid */
+.dashboard-grades-section { margin-bottom: 2rem; }
+.dashboard-grades-section h2 { margin-bottom: 1rem; color: #1a1a2e; }
+
+.dashboard-grade-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.dashboard-grade-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  display: flex;
+  flex-direction: column;
+}
+.dashboard-grade-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.dashboard-grade-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.25rem;
+}
+.dashboard-grade-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #1a1a2e;
+}
+.dashboard-grade-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #4285f4;
+  background: #eff6ff;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+.dashboard-grade-counts {
+  font-size: 0.78rem;
+  color: #6b7280;
+  margin-top: 0.4rem;
+}
+
+/* Current grade milestones section */
+.milestones-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: #1a1a2e;
+}
+.dashboard-grade-link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4285f4;
+  text-decoration: none;
+}
+.dashboard-grade-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   Profile Page
+   ============================================================ */
+
+.profile-page { min-height: 100vh; }
+
+.profile-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  max-width: 600px;
+}
+
+.profile-section { margin-bottom: 1.5rem; }
+.profile-section h2 { font-size: 1rem; font-weight: 600; color: #1a1a2e; margin-bottom: 0.75rem; }
+.profile-hint { font-size: 0.85rem; color: #6b7280; margin-bottom: 1rem; }
+
+.profile-field {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #f3f4f6;
+}
+.profile-field:last-child { border-bottom: none; }
+.profile-label { font-size: 0.85rem; color: #6b7280; min-width: 60px; }
+.profile-value { font-size: 0.95rem; color: #1a1a2e; font-weight: 500; }
+
+.profile-divider { border: none; border-top: 1px solid #e5e7eb; margin: 1.5rem 0; }
+
+/* Grade selector buttons */
+.profile-grade-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+.profile-grade-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.85rem 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.profile-grade-btn:hover { border-color: #4285f4; background: #f0f7ff; }
+.profile-grade-btn.selected {
+  border-color: #4285f4;
+  background: #eff6ff;
+}
+
+.profile-grade-num { font-size: 1.1rem; font-weight: 700; color: #4285f4; }
+.profile-grade-sub { font-size: 0.78rem; color: #6b7280; }
+
+.profile-save-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.25rem;
+}
+
+.profile-save-btn {
+  padding: 0.6rem 1.5rem;
+  background: #4285f4;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.profile-save-btn:hover:not(:disabled) { background: #2563eb; }
+.profile-save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.profile-saved-msg { font-size: 0.85rem; color: #34a853; font-weight: 500; }
+
+/* Profile form fields */
+.profile-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+@media (max-width: 500px) {
+  .profile-form-grid { grid-template-columns: 1fr; }
+}
+
+.profile-form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.profile-form-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #374151;
+}
+.profile-form-field input,
+.profile-form-field select {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #1a1a2e;
+  background: #fff;
+  transition: border-color 0.15s ease;
+  outline: none;
+}
+.profile-form-field input:focus,
+.profile-form-field select:focus {
+  border-color: #4285f4;
+}
