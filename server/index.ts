@@ -45,7 +45,9 @@ app.use('/api', apiRoutes);
 // ---------------------------------------------------------------------------
 // Static React build  →  /build (produced by `npm run build` at project root)
 // ---------------------------------------------------------------------------
-const buildPath = path.join(__dirname, '..', 'build');
+// ts-node: __dirname = server/  → ../build = project root/build
+// compiled: __dirname = server/dist/ → ../../build = project root/build
+const buildPath = path.join(__dirname, process.env.NODE_ENV === 'production' ? '../..' : '..', 'build');
 app.use(express.static(buildPath));
 
 // Catch-all: hand off unknown routes to React's client-side router

@@ -33,7 +33,13 @@ jobs:
           REACT_APP_B2C_TENANT_NAME: ${{ secrets.REACT_APP_B2C_TENANT_NAME }}
 
       - name: Install server dependencies
-        run: cd server && npm install --omit=dev
+        run: cd server && npm install
+
+      - name: Build server TypeScript
+        run: cd server && npm run build
+
+      - name: Prune server dev dependencies
+        run: cd server && npm prune --omit=dev
 
       - name: Package deployment artifact
         run: |
