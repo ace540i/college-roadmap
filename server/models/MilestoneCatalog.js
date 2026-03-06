@@ -26,4 +26,7 @@ const MilestoneCatalogSchema = new mongoose.Schema({
   tasks:       [TaskSchema],
 });
 
+// Cosmos DB requires an index on any field used in sort()
+MilestoneCatalogSchema.index({ grade: 1, order: 1 });
+
 module.exports = mongoose.model('MilestoneCatalog', MilestoneCatalogSchema);
