@@ -1,13 +1,13 @@
-'use strict';
+import { Router, Request, Response } from 'express';
+import Student from '../models/Student';
+import MilestoneCatalog from '../models/MilestoneCatalog';
+import Progress from '../models/Progress';
 
-const router = require('express').Router();
-const Student = require('../models/Student');
-const MilestoneCatalog = require('../models/MilestoneCatalog');
-const Progress = require('../models/Progress');
+const router = Router();
 
 // GET /api/dashboard/:userId
 // Returns student profile + milestone catalog + progress summary for their grade
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', async (req: Request, res: Response) => {
   try {
     const student = await Student.findOne({ userId: req.params.userId });
     if (!student) return res.status(404).json({ message: 'Profile not found' });
@@ -41,9 +41,9 @@ router.get('/:userId', async (req, res) => {
       })),
     });
   } catch (err) {
-    console.error('[dashboard] GET error:', err.message);
+    console.error('[dashboard] GET error:', (err as Error).message);
     res.status(500).json({ message: 'Server error' });
   }
 });
 
-module.exports = router;
+export default router;
