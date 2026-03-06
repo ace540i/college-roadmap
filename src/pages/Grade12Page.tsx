@@ -1,7 +1,15 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useMilestones } from '../hooks/useMilestones';
+import MilestoneSection from '../components/MilestoneSection';
 
 const Grade12Page: React.FC = () => {
+  const { milestones, loading, error, toggleTask } = useMilestones(12);
+
+  const totalTasks     = milestones.reduce((s, m) => s + m.tasks.length, 0);
+  const completedTasks = milestones.reduce((s, m) => s + m.tasks.filter(t => t.completed).length, 0);
+  const percent        = totalTasks ? Math.round((completedTasks / totalTasks) * 100) : 0;
+
   return (
     <div className="grade-detail-page">
       {/* Header */}
@@ -29,91 +37,26 @@ const Grade12Page: React.FC = () => {
           </div>
         </section>
 
-        {/* Seasonal Timeline */}
-        <section className="timeline-section">
-          <h2>📅 Yearly Timeline</h2>
-          
-          <div className="season-block">
-            <h3>Fall</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag financial-aid">financial aid</span>
-                <span className="tag fall">fall</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Submit FAFSA</h4>
-              <p>Complete the Free Application for Federal Student Aid as soon as possible after October 1</p>
-              <div className="milestone-status">○</div>
+        {/* Overall Progress */}
+        {!loading && !error && totalTasks > 0 && (
+          <section className="overall-progress-section">
+            <div className="overall-progress-bar">
+              <div className="overall-progress-fill" style={{ width: `${percent}%` }} />
             </div>
+            <p className="overall-progress-label">
+              Overall: {completedTasks} / {totalTasks} tasks complete ({percent}%)
+            </p>
+          </section>
+        )}
 
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag college-prep">college prep</span>
-                <span className="tag fall">fall</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Complete College Applications</h4>
-              <p>Submit early action/decision applications and work on regular decision applications</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Winter</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag college-prep">college prep</span>
-                <span className="tag winter">winter</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Submit Remaining Applications</h4>
-              <p>Complete and submit all regular decision college applications before deadlines</p>
-              <div className="milestone-status">○</div>
-            </div>
-
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag financial-aid">financial aid</span>
-                <span className="tag winter">winter</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Apply for Scholarships</h4>
-              <p>Research and apply for merit-based and need-based scholarships</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Spring</h3>
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag college-prep">college prep</span>
-                <span className="tag spring">spring</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Make Final College Decision</h4>
-              <p>Choose your college and submit enrollment deposit by May 1st</p>
-              <div className="milestone-status">○</div>
-            </div>
-
-            <div className="milestone-card">
-              <div className="milestone-tags">
-                <span className="tag financial-aid">financial aid</span>
-                <span className="tag spring">spring</span>
-                <span className="tag high-priority">⚠ High Priority</span>
-              </div>
-              <h4>Compare Financial Aid Offers</h4>
-              <p>Review and compare financial aid packages from accepted schools</p>
-              <div className="milestone-status">○</div>
-            </div>
-          </div>
-
-          <div className="season-block">
-            <h3>Summer</h3>
-            <div className="summer-message">
-              <p>No milestones scheduled for summer</p>
-            </div>
-          </div>
+        {/* Milestones */}
+        <section className="milestones-section">
+          <h2>📋 Milestones & Tasks</h2>
+          {loading && <p className="loading-msg">Loading milestones...</p>}
+          {error   && <p className="error-msg">Could not load milestones. Please try again.</p>}
+          {milestones.map(m => (
+            <MilestoneSection key={m._id} milestone={m} onToggle={toggleTask} />
+          ))}
         </section>
 
         {/* Senior Year Success Tips */}
