@@ -32,15 +32,23 @@ const DashboardPage: React.FC = () => {
     setLoading(true);
     setError(null);
 
+    const safeJson = async (r: Response) => {
+      if (!r.ok) throw new Error(`${r.status} ${r.statusText} — ${r.url}`);
+      return r.json();
+    };
+
     Promise.all([
-      fetch(`${API}/api/summary/${user.localAccountId}`).then(r => r.json()),
-      fetch(`${API}/api/dashboard/${user.localAccountId}`).then(r => r.json()),
+      fetch(`${API}/api/summary/${user.localAccountId}`).then(safeJson),
+      fetch(`${API}/api/dashboard/${user.localAccountId}`).then(safeJson),
     ])
       .then(([summaryData, dashData]) => {
         setSummary(summaryData);
         setDashboard(dashData);
       })
-      .catch(err => setError((err as Error).message))
+      .catch(err => {
+        console.error('[dashboard] fetch error:', err);
+        setError((err as Error).message);
+      })
       .finally(() => setLoading(false));
   }, [user]);
 
@@ -114,7 +122,7 @@ const DashboardPage: React.FC = () => {
 
       <div className="container">
         {loading && <p className="loading-msg">Loading dashboard...</p>}
-        {error   && <p className="error-msg">Could not load dashboard. Please try again.</p>}
+        {error   && <p className="error-msg">Could not load dashboard: {error}</p>}
 
         {!loading && !error && (
           <>
