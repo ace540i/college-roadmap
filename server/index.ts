@@ -45,6 +45,8 @@ app.use('/api', apiRoutes);
 // ---------------------------------------------------------------------------
 // Static React build  →  /build (produced by `npm run build` at project root)
 // ---------------------------------------------------------------------------
+// dev (ts-node): __dirname = server/    → ../build = project/build
+// prod (compiled): __dirname = wwwroot/dist/ → ../build = wwwroot/build
 const buildPath = path.join(__dirname, '..', 'build');
 app.use(express.static(buildPath));
 

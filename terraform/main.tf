@@ -74,9 +74,8 @@ resource "azurerm_linux_web_app" "main" {
       node_version = var.node_version
     }
 
-    # Starts the Express server (TypeScript via ts-node with transpileOnly).
-    # Working directory is /home/site/wwwroot after deployment.
-    app_command_line = "cd /home/site/wwwroot/server && npm start"
+    # Runs the compiled Express server. dist/ and node_modules/ are at wwwroot root.
+    app_command_line = "node dist/index.js"
   }
 
   app_settings = {
