@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
+import NavBar from './NavBar';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -20,37 +21,42 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className={`app-layout ${sidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-open'}`}>
-      {/* Fixed Toggle Button (visible when sidebar is collapsed) */}
-      {sidebarCollapsed && (
-        <button 
-          className="sidebar-toggle-fixed" 
-          onClick={toggleSidebarCollapse}
-          title="Show Sidebar"
-        >
-          <span className="hamburger-icon">☰</span>
-        </button>
-      )}
+    <div className="app-shell">
+      {/* Horizontal top nav */}
+      <NavBar />
 
-      {/* Sidebar Overlay (for mobile) */}
-      {!sidebarCollapsed && (
-        <div className="sidebar-overlay" onClick={toggleSidebarCollapse}></div>
-      )}
+      <div className={`app-layout ${sidebarCollapsed ? 'sidebar-collapsed' : 'sidebar-open'}`}>
+        {/* Fixed Toggle Button (visible when sidebar is collapsed) */}
+        {sidebarCollapsed && (
+          <button
+            className="sidebar-toggle-fixed"
+            onClick={toggleSidebarCollapse}
+            title="Show Sidebar"
+          >
+            <span className="hamburger-icon">☰</span>
+          </button>
+        )}
 
-      {/* Sidebar - conditionally rendered */}
-      {!sidebarCollapsed && (
-        <Sidebar 
-          collapsed={false}
-          onToggle={toggleSidebarCollapse}
-        />
-      )}
+        {/* Sidebar Overlay (for mobile) */}
+        {!sidebarCollapsed && (
+          <div className="sidebar-overlay" onClick={toggleSidebarCollapse}></div>
+        )}
 
-      {/* Main Content */}
-      <div className={`main-content ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
-        <main className="main-inner">
-          {children}
-        </main>
-        <TopBar />
+        {/* Sidebar */}
+        {!sidebarCollapsed && (
+          <Sidebar
+            collapsed={false}
+            onToggle={toggleSidebarCollapse}
+          />
+        )}
+
+        {/* Main Content */}
+        <div className={`main-content ${sidebarCollapsed ? 'sidebar-collapsed' : ''}`}>
+          <main className="main-inner">
+            {children}
+          </main>
+          <TopBar />
+        </div>
       </div>
     </div>
   );

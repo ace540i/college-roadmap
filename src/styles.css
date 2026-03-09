@@ -2743,3 +2743,114 @@ h2 {
 .profile-form-field select:focus {
   border-color: #4285f4;
 }
+
+/* ── app-shell wraps navbar + app-layout ── */
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── NavBar ── */
+.navbar {
+  background: #1a1a2e;
+  color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0 20px;
+  height: 48px;
+}
+
+.navbar-menu {
+  position: relative;
+}
+
+.navbar-menu-btn {
+  background: none;
+  border: none;
+  color: #e0e0e0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.navbar-menu-btn:hover,
+.navbar-menu-btn.active {
+  background: rgba(255,255,255,0.12);
+  color: #fff;
+}
+
+.navbar-caret {
+  font-size: 0.65rem;
+  opacity: 0.7;
+  transition: transform 0.2s;
+}
+
+.navbar-menu-btn.active .navbar-caret {
+  transform: rotate(180deg);
+}
+
+.navbar-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.16);
+  min-width: 280px;
+  padding: 8px;
+  z-index: 1200;
+}
+
+.navbar-dropdown-item {
+  display: block;
+  padding: 10px 14px;
+  border-radius: 7px;
+  text-decoration: none;
+  color: #2c3e50;
+  transition: background 0.15s;
+}
+
+.navbar-dropdown-item:hover {
+  background: #f0f4ff;
+}
+
+.navbar-dropdown-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.navbar-dropdown-label {
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #1a1a2e;
+}
+
+.navbar-dropdown-desc {
+  font-size: 0.78rem;
+  color: #6b7280;
+  line-height: 1.3;
+}
+
+.navbar-dropdown-ext {
+  font-size: 0.7rem;
+  color: #9ca3af;
+  margin-left: 2px;
+}
