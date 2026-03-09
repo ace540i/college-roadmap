@@ -47,6 +47,13 @@ const App: React.FC = () => {
             <Route path="/application-tracker" element={<ProtectedLayout><div className="page-placeholder"><h2>Application Tracker</h2><p>Coming soon!</p></div></ProtectedLayout>} />
             <Route path="/test-prep" element={<ProtectedLayout><div className="page-placeholder"><h2>Test Prep</h2><p>Coming soon!</p></div></ProtectedLayout>} />
             <Route path="/financial-aid" element={<ProtectedLayout><div className="page-placeholder"><h2>Financial Aid</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/college-compare" element={<ProtectedLayout><div className="page-placeholder"><h2>Compare Colleges</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/college-rankings" element={<ProtectedLayout><div className="page-placeholder"><h2>College Rankings</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/career-search" element={<ProtectedLayout><div className="page-placeholder"><h2>Career Search</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/career-outlook" element={<ProtectedLayout><div className="page-placeholder"><h2>Career Outlook</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/career-quiz" element={<ProtectedLayout><div className="page-placeholder"><h2>Career Quiz</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/scholarships" element={<ProtectedLayout><div className="page-placeholder"><h2>Scholarships</h2><p>Coming soon!</p></div></ProtectedLayout>} />
+            <Route path="/cost-calculator" element={<ProtectedLayout><div className="page-placeholder"><h2>Cost Calculator</h2><p>Coming soon!</p></div></ProtectedLayout>} />
           </Routes>
         </div>
       </AuthProvider>
